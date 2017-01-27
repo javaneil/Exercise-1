@@ -1,8 +1,5 @@
 package edu.matc.entity;
 
-// TODO Add instance variable for the date of birth
-// TODO Add a calculation for the user's age. Age should not be stored, it should be calculated only.
-
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;

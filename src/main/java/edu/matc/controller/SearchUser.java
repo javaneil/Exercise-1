@@ -1,7 +1,6 @@
 package edu.matc.controller;
 
 import edu.matc.persistence.UserData;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.System;
+//import java.lang.System;
 import org.apache.log4j.*;
 
 
@@ -24,7 +23,6 @@ import org.apache.log4j.*;
 )
 
 public class SearchUser extends HttpServlet {
-    //2017_01_23nkf instantiate log4j logger
     private final Logger logger = Logger.getLogger( this.getClass() );
 
     public void init() throws ServletException {
@@ -37,9 +35,9 @@ public class SearchUser extends HttpServlet {
         resp.setContentType( "text/html" ) ;
         PrintWriter out = resp.getWriter();
 
-        System.out.println( "Search String = " + req.getParameter("inputLast") ) ;
+        // log lastname entered on form (replaces System.out.println() )
         logger.info( "SearchUser.doGet() Search String = " + req.getParameter("inputLast") );
-
+        // simple logging test of all the levels:
         logger.trace( "Trace Message!" );
         logger.debug( "Debug Message!" );
         logger.info( "Info Message!" );
@@ -48,8 +46,10 @@ public class SearchUser extends HttpServlet {
         logger.fatal( "Fatal Message!" );
 
         UserData userData = new UserData();
+        //TODO add "list all" button to form, or some other logic to dump all rows?
 //        req.setAttribute("users", userData.getAllUsers() );
         req.setAttribute("users", userData.getUsersByLastName( req.getParameter("inputLast") ) );
+
         RequestDispatcher dispatcher = req.getRequestDispatcher("/results.jsp");
         dispatcher.forward(req, resp);
     }

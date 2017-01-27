@@ -1,13 +1,13 @@
 package edu.matc.persistence;
 
 import edu.matc.entity.User;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.*;
 
 /**
  * Access users in the user table.
@@ -15,6 +15,7 @@ import java.util.List;
  * @author pwaite
  */
 public class UserData {
+    private final Logger logger = Logger.getLogger( this.getClass() );
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<User>();
@@ -33,14 +34,14 @@ public class UserData {
             }
             database.disconnect();
         } catch (SQLException e) {
-            System.out.println("SearchUser.getAllUsers()...SQL Exception: " + e);
+            logger.error("SearchUser.getAllUsers()...SQL Exception: ", e);
         } catch (Exception e) {
-            System.out.println("SearchUser.getAllUsers()...Exception: " + e);
+            logger.error("SearchUser.getAllUsers()...Exception: ", e);
         }
         return users;
     }
 
-    //TODO add a method or methods to return a single user based on search criteria
+    //TODO reduce the redundant code here...
 
     public List<User> getUsersByLastName( String lastname ) {
         List<User> users = new ArrayList<User>();
@@ -60,10 +61,9 @@ public class UserData {
             }
             database.disconnect();
         } catch (SQLException e) {
-
-            System.out.println("SearchUser.getAllUsers()...SQL Exception: " + e);
+            logger.info("SearchUser.getAllUsers()...SQL Exception: ", e); // include stacktrace
         } catch (Exception e) {
-            System.out.println("SearchUser.getAllUsers()...Exception: " + e);
+            logger.info("SearchUser.getAllUsers()...Exception: ", e); // include stacktrace
         }
         return users;
     }
@@ -71,12 +71,10 @@ public class UserData {
     private User createUserFromResults(ResultSet results) throws SQLException {
         User user = new User();
         user.setLastName(results.getString("last_name"));
-        // TODO map the remaining fields
         user.setFirstName(results.getString("first_name")); //2017-01-18nkf
         user.setUserid(results.getString("id"));            //2017-01-18nkf
         user.setBirthDate(results.getDate("date_of_birth")) ; //2017-01-21nkf
 
         return user;
     }
-
 }

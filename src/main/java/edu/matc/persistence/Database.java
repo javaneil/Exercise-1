@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import org.apache.log4j.*;
 /**
  * Provides access the database
  * Created on 8/31/16.
@@ -28,17 +29,17 @@ public class Database {
     }
 
     private void loadProperties() {
+        final Logger logger = Logger.getLogger( this.getClass() );
         properties = new Properties();
         try {
             properties.load (this.getClass().getResourceAsStream("/database.properties"));
         } catch (IOException ioe) {
-            System.out.println("Database.loadProperties()...Cannot load the properties file");
+            logger.error("Database.loadProperties()...Cannot load the properties file", ioe);
             ioe.printStackTrace();
         } catch (Exception e) {
-            System.out.println("Database.loadProperties()..." + e);
+            logger.error("Database.loadProperties()...", e);
             e.printStackTrace();
         }
-
     }
 
     // get the only Database object available
@@ -65,14 +66,14 @@ public class Database {
     }
 
     public void disconnect() {
+        final Logger logger = Logger.getLogger( this.getClass() );
         if (connection != null) {
             try {
                 connection.close();
             } catch (SQLException e) {
-                System.out.println("Cannot close connection" + e);
+                logger.error("Cannot close connection", e);
             }
         }
-
         connection = null;
     }
 
